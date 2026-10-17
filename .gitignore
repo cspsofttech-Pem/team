@@ -1,0 +1,4 @@
+.streamlit/secrets.toml
+tasks.db
+tasks.json
+__pycache__/
