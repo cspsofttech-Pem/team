@@ -143,6 +143,11 @@ button[data-baseweb="tab"][aria-selected="true"] { background: #eef2ff; color: #
 [class*="st-key-card_high_"] .ticket-id, [class*="st-key-card_high_"] [data-testid="stCaptionContainer"] { color: #fff !important; }
 [class*="st-key-card_high_"] button { background: rgba(255,255,255,.2) !important; border-color: rgba(255,255,255,.55) !important; }
 [class*="st-key-card_high_"] button p { color: #fff !important; }
+/* Never turn typed text white (inputs, dropdowns, dates stay dark and readable) */
+[class*="st-key-card_"] input, [class*="st-key-card_"] textarea,
+[class*="st-key-card_"] [data-baseweb="select"] div, [class*="st-key-card_"] [data-baseweb="select"] span {
+    color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; }
+[class*="st-key-card_edit_"] { border: 2px solid #6366f1 !important; background: #fff !important; }
 
 .urg-label { font-size: .72rem; font-weight: 600; padding: 2px 10px; border-radius: 99px; color: white;
              border: 1px solid rgba(255,255,255,.6); }
@@ -480,7 +485,9 @@ def assignee_input(label, current=""):
 
 
 def render_ticket(t, ctx):
-    if t["priority"] == "High" and t["status"] != "Completed":
+    if st.session_state.editing == t["id"]:
+        style = "edit"            # plain white card while editing, so the form is readable
+    elif t["priority"] == "High" and t["status"] != "Completed":
         style = "high"
     else:
         style = due_urgency(t) or "none"
